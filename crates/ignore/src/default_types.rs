@@ -243,8 +243,8 @@ pub const DEFAULT_TYPES: &[(&str, &[&str])] = &[
     ("vcl", &["*.vcl"]),
     ("verilog", &["*.v", "*.vh", "*.sv", "*.svh"]),
     ("vhdl", &["*.vhd", "*.vhdl"]),
-    ("vim", &["*.vim"]),
-    ("vimscript", &["*.vim"]),
+    ("vim", &["*.vim", ".vimrc", ".gvimrc", "vimrc", "gvimrc", "_vimrc", "_gvimrc"]),
+    ("vimscript", &["*.vim", ".vimrc", ".gvimrc", "vimrc", "gvimrc", "_vimrc", "_gvimrc"]),
     ("webidl", &["*.idl", "*.webidl", "*.widl"]),
     ("wiki", &["*.mediawiki", "*.wiki"]),
     ("xml", &[
