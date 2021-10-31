@@ -72,6 +72,7 @@ def bench_linux_literal_default(suite_dir):
 
     return Benchmark(pattern=pat, commands=[
         mkcmd('rg', ['rg', pat]),
+        mkcmd('rg-mimalloc', ['rg-mimalloc', pat]),
         mkcmd('ag', ['ag', pat]),
         # I guess setting LC_ALL=en_US.UTF-8 probably isn't necessarily the
         # default, but I'd guess it to be on most desktop systems.
@@ -100,7 +101,9 @@ def bench_linux_literal(suite_dir):
 
     return Benchmark(pattern=pat, commands=[
         mkcmd('rg', ['rg', '-n', pat]),
+        mkcmd('rg-mimalloc', ['rg-mimalloc', '-n', pat]),
         mkcmd('rg (mmap)', ['rg', '-n', '--mmap', pat]),
+        mkcmd('rg-mimalloc (mmap)', ['rg-mimalloc', '-n', '--mmap', pat]),
         mkcmd('ag (mmap)', ['ag', '-s', pat]),
         mkcmd('git grep', [
             'git', 'grep', '-I', '-n', pat,
@@ -129,7 +132,9 @@ def bench_linux_literal_casei(suite_dir):
 
     return Benchmark(pattern=pat, commands=[
         mkcmd('rg', ['rg', '-n', '-i', pat]),
+        mkcmd('rg-mimalloc', ['rg-mimalloc', '-n', '-i', pat]),
         mkcmd('rg (mmap)', ['rg', '-n', '-i', '--mmap', pat]),
+        mkcmd('rg-mimalloc (mmap)', ['rg-mimalloc', '-n', '-i', '--mmap', pat]),
         mkcmd('ag (mmap)', ['ag', '-i', pat]),
         # It'd technically be more appropriate to set LC_ALL=en_US.UTF-8 here,
         # since that is certainly what ripgrep is doing, but this is for an
@@ -159,6 +164,7 @@ def bench_linux_re_literal_suffix(suite_dir):
 
     return Benchmark(pattern=pat, commands=[
         mkcmd('rg', ['rg', '-n', pat]),
+        mkcmd('rg-mimalloc', ['rg-mimalloc', '-n', pat]),
         mkcmd('ag', ['ag', '-s', pat]),
         mkcmd(
             'git grep',
@@ -186,6 +192,7 @@ def bench_linux_word(suite_dir):
 
     return Benchmark(pattern=pat, commands=[
         mkcmd('rg', ['rg', '-n', '-w', pat]),
+        mkcmd('rg-mimalloc', ['rg-mimalloc', '-n', '-w', pat]),
         mkcmd('ag', ['ag', '-s', '-w', pat]),
         mkcmd(
             'git grep',
@@ -213,6 +220,7 @@ def bench_linux_unicode_greek(suite_dir):
 
     return Benchmark(pattern=pat, commands=[
         mkcmd('rg', ['rg', '-n', pat]),
+        mkcmd('rg-mimalloc', ['rg-mimalloc', '-n', pat]),
         mkcmd('ugrep', [
             'ugrep', '-r', '--ignore-files', '--no-hidden', '-I',
             '-n', pat, './',
@@ -236,6 +244,7 @@ def bench_linux_unicode_greek_casei(suite_dir):
 
     return Benchmark(pattern=pat, commands=[
         mkcmd('rg', ['rg', '-n', '-i', pat]),
+        mkcmd('rg-mimalloc', ['rg-mimalloc', '-n', '-i', pat]),
         mkcmd('ugrep', [
             'ugrep', '-r', '--ignore-files', '--no-hidden', '-I',
             '-n', '-i', pat, './',
@@ -261,7 +270,9 @@ def bench_linux_unicode_word(suite_dir):
 
     return Benchmark(pattern=pat, commands=[
         mkcmd('rg', ['rg', '-n', pat]),
+        mkcmd('rg-mimalloc', ['rg-mimalloc', '-n', pat]),
         mkcmd('rg (ASCII)', ['rg', '-n', '(?-u)' + pat]),
+        mkcmd('rg-mimalloc (ASCII)', ['rg-mimalloc', '-n', '(?-u)' + pat]),
         mkcmd('ag (ASCII)', ['ag', '-s', pat]),
         mkcmd(
             'git grep',
@@ -303,7 +314,9 @@ def bench_linux_no_literal(suite_dir):
 
     return Benchmark(pattern=pat, commands=[
         mkcmd('rg', ['rg', '-n', pat]),
+        mkcmd('rg-mimalloc', ['rg-mimalloc', '-n', pat]),
         mkcmd('rg (ASCII)', ['rg', '-n', '(?-u)' + pat]),
+        mkcmd('rg-mimalloc (ASCII)', ['rg-mimalloc', '-n', '(?-u)' + pat]),
         mkcmd('ag (ASCII)', ['ag', '-s', pat]),
         mkcmd(
             'git grep',
@@ -345,6 +358,7 @@ def bench_linux_alternates(suite_dir):
 
     return Benchmark(pattern=pat, commands=[
         mkcmd('rg', ['rg', '-n', pat]),
+        mkcmd('rg-mimalloc', ['rg-mimalloc', '-n', pat]),
         mkcmd('ag', ['ag', '-s', pat]),
         mkcmd(
             'git grep',
@@ -370,6 +384,7 @@ def bench_linux_alternates_casei(suite_dir):
 
     return Benchmark(pattern=pat, commands=[
         mkcmd('rg', ['rg', '-n', '-i', pat]),
+        mkcmd('rg-mimalloc', ['rg-mimalloc', '-n', '-i', pat]),
         mkcmd('ag', ['ag', '-i', pat]),
         mkcmd(
             'git grep',
@@ -393,9 +408,12 @@ def bench_subtitles_en_literal(suite_dir):
 
     return Benchmark(pattern=pat, commands=[
         Command('rg', ['rg', pat, en]),
+        Command('rg-mimalloc', ['rg-mimalloc', pat, en]),
         Command('rg (no mmap)', ['rg', '--no-mmap', pat, en]),
+        Command('rg-mimalloc (no mmap)', ['rg-mimalloc', '--no-mmap', pat, en]),
         Command('grep', ['grep', pat, en], env=GREP_ASCII),
         Command('rg (lines)', ['rg', '-n', pat, en]),
+        Command('rg-mimalloc (lines)', ['rg-mimalloc', '-n', pat, en]),
         Command('ag (lines)', ['ag', '-s', pat, en]),
         Command('grep (lines)', ['grep', '-n', pat, en], env=GREP_ASCII),
         Command('ugrep (lines)', ['ugrep', '-n', pat, en])
@@ -412,9 +430,11 @@ def bench_subtitles_en_literal_casei(suite_dir):
 
     return Benchmark(pattern=pat, commands=[
         Command('rg', ['rg', '-i', pat, en]),
+        Command('rg-mimalloc', ['rg-mimalloc', '-i', pat, en]),
         Command('grep', ['grep', '-i', pat, en], env=GREP_UNICODE),
         Command('grep (ASCII)', ['grep', '-E', '-i', pat, en], env=GREP_ASCII),
         Command('rg (lines)', ['rg', '-n', '-i', pat, en]),
+        Command('rg-mimalloc (lines)', ['rg-mimalloc', '-n', '-i', pat, en]),
         Command('ag (lines) (ASCII)', ['ag', '-i', pat, en]),
         Command('ugrep (lines)', ['ugrep', '-n', '-i', pat, en])
     ])
@@ -432,10 +452,14 @@ def bench_subtitles_en_literal_word(suite_dir):
         Command('rg (ASCII)', [
             'rg', '-n', r'(?-u:\b)' + pat + r'(?-u:\b)', en,
         ]),
+        Command('rg-mimalloc (ASCII)', [
+            'rg-mimalloc', '-n', r'(?-u:\b)' + pat + r'(?-u:\b)', en,
+        ]),
         Command('ag (ASCII)', ['ag', '-sw', pat, en]),
         Command('grep (ASCII)', ['grep', '-nw', pat, en], env=GREP_ASCII),
         Command('ugrep (ASCII)', ['ugrep', '-nw', pat, en]),
         Command('rg', ['rg', '-nw', pat, en]),
+        Command('rg-mimalloc', ['rg-mimalloc', '-nw', pat, en]),
         Command('grep', ['grep', '-nw', pat, en], env=GREP_UNICODE),
     ])
 
@@ -456,10 +480,12 @@ def bench_subtitles_en_alternate(suite_dir):
 
     return Benchmark(pattern=pat, commands=[
         Command('rg (lines)', ['rg', '-n', pat, en]),
+        Command('rg-mimalloc (lines)', ['rg-mimalloc', '-n', pat, en]),
         Command('ag (lines)', ['ag', '-s', pat, en]),
         Command('grep (lines)', ['grep', '-E', '-n', pat, en], env=GREP_ASCII),
         Command('ugrep (lines)', ['ugrep', '-n', pat, en]),
         Command('rg', ['rg', pat, en]),
+        Command('rg-mimalloc', ['rg-mimalloc', pat, en]),
         Command('grep', ['grep', '-E', pat, en], env=GREP_ASCII),
     ])
 
@@ -485,6 +511,7 @@ def bench_subtitles_en_alternate_casei(suite_dir):
         ], env=GREP_ASCII),
         Command('ugrep (ASCII)', ['ugrep', '-n', '-i', pat, en]),
         Command('rg', ['rg', '-n', '-i', pat, en]),
+        Command('rg-mimalloc', ['rg-mimalloc', '-n', '-i', pat, en]),
         Command('grep', ['grep', '-E', '-ni', pat, en], env=GREP_UNICODE),
     ])
 
@@ -499,9 +526,11 @@ def bench_subtitles_en_surrounding_words(suite_dir):
 
     return Benchmark(pattern=pat, commands=[
         Command('rg', ['rg', '-n', pat, en]),
+        Command('rg-mimalloc', ['rg-mimalloc', '-n', pat, en]),
         Command('grep', ['grep', '-E', '-n', pat, en], env=GREP_UNICODE),
         Command('ugrep', ['ugrep', '-n', pat, en]),
         Command('rg (ASCII)', ['rg', '-n', '(?-u)' + pat, en]),
+        Command('rg-mimalloc (ASCII)', ['rg-mimalloc', '-n', '(?-u)' + pat, en]),
         Command('ag (ASCII)', ['ag', '-s', pat, en]),
         Command('grep (ASCII)', ['grep', '-E', '-n', pat, en], env=GREP_ASCII),
         Command('ugrep (ASCII)', ['ugrep', '-n', '-U', pat, en])
@@ -523,8 +552,10 @@ def bench_subtitles_en_no_literal(suite_dir):
 
     return Benchmark(pattern=pat, commands=[
         Command('rg', ['rg', '-n', pat, en]),
+        Command('rg-mimalloc', ['rg-mimalloc', '-n', pat, en]),
         Command('ugrep', ['ugrep', '-n', pat, en]),
         Command('rg (ASCII)', ['rg', '-n', '(?-u)' + pat, en]),
+        Command('rg-mimalloc (ASCII)', ['rg-mimalloc', '-n', '(?-u)' + pat, en]),
         Command('ag (ASCII)', ['ag', '-s', pat, en]),
         Command('grep (ASCII)', ['grep', '-E', '-n', pat, en], env=GREP_ASCII),
         Command('ugrep (ASCII)', ['ugrep', '-n', '-U', pat, en])
@@ -541,9 +572,12 @@ def bench_subtitles_ru_literal(suite_dir):
 
     return Benchmark(pattern=pat, commands=[
         Command('rg', ['rg', pat, ru]),
+        Command('rg-mimalloc', ['rg-mimalloc', pat, ru]),
         Command('rg (no mmap)', ['rg', '--no-mmap', pat, ru]),
+        Command('rg-mimalloc (no mmap)', ['rg-mimalloc', '--no-mmap', pat, ru]),
         Command('grep', ['grep', pat, ru], env=GREP_ASCII),
         Command('rg (lines)', ['rg', '-n', pat, ru]),
+        Command('rg-mimalloc (lines)', ['rg-mimalloc', '-n', pat, ru]),
         Command('ag (lines)', ['ag', '-s', pat, ru]),
         Command('grep (lines)', ['grep', '-n', pat, ru], env=GREP_ASCII),
         Command('ugrep (lines)', ['ugrep', '-n', pat, ru])
@@ -560,9 +594,11 @@ def bench_subtitles_ru_literal_casei(suite_dir):
 
     return Benchmark(pattern=pat, commands=[
         Command('rg', ['rg', '-i', pat, ru]),
+        Command('rg-mimalloc', ['rg-mimalloc', '-i', pat, ru]),
         Command('grep', ['grep', '-i', pat, ru], env=GREP_UNICODE),
         Command('grep (ASCII)', ['grep', '-E', '-i', pat, ru], env=GREP_ASCII),
         Command('rg (lines)', ['rg', '-n', '-i', pat, ru]),
+        Command('rg-mimalloc (lines)', ['rg-mimalloc', '-n', '-i', pat, ru]),
         Command('ag (lines) (ASCII)', ['ag', '-i', pat, ru]),
         Command('ugrep (lines) (ASCII)', ['ugrep', '-n', '-i', pat, ru])
     ])
@@ -584,12 +620,20 @@ def bench_subtitles_ru_literal_word(suite_dir):
             # boundaries, we just hand-jam this ourselves.
             'rg', '-n', r'(?-u:^|\W)' + pat + r'(?-u:$|\W)', ru,
         ]),
+        Command('rg-mimalloc (ASCII)', [
+            # You might think we'd use \b here for word boundaries, but both
+            # GNU grep and ripgrep implement -w with the formulation below.
+            # Since we can't use Unicode in a pattern and disable Unicode word
+            # boundaries, we just hand-jam this ourselves.
+            'rg-mimalloc', '-n', r'(?-u:^|\W)' + pat + r'(?-u:$|\W)', ru,
+        ]),
         Command('ag (ASCII)', ['ag', '-sw', pat, ru]),
         Command('grep (ASCII)', [
             'grep', '-nw', pat, ru,
         ], env=GREP_ASCII),
         Command('ugrep (ASCII)', ['ugrep', '-nw', pat, ru]),
         Command('rg', ['rg', '-nw', pat, ru]),
+        Command('rg-mimalloc', ['rg-mimalloc', '-nw', pat, ru]),
         Command('grep', ['grep', '-nw', pat, ru], env=GREP_UNICODE),
     ])
 
@@ -610,10 +654,12 @@ def bench_subtitles_ru_alternate(suite_dir):
 
     return Benchmark(pattern=pat, commands=[
         Command('rg (lines)', ['rg', '-n', pat, ru]),
+        Command('rg-mimalloc (lines)', ['rg-mimalloc', '-n', pat, ru]),
         Command('ag (lines)', ['ag', '-s', pat, ru]),
         Command('grep (lines)', ['grep', '-E', '-n', pat, ru], env=GREP_ASCII),
         Command('ugrep (lines)', ['ugrep', '-n', pat, ru]),
         Command('rg', ['rg', pat, ru]),
+        Command('rg-mimalloc', ['rg-mimalloc', pat, ru]),
         Command('grep', ['grep', '-E', pat, ru], env=GREP_ASCII),
     ])
 
@@ -639,6 +685,7 @@ def bench_subtitles_ru_alternate_casei(suite_dir):
         ], env=GREP_ASCII),
         Command('ugrep (ASCII)', ['ugrep', '-n', '-i', pat, ru]),
         Command('rg', ['rg', '-n', '-i', pat, ru]),
+        Command('rg-mimalloc', ['rg-mimalloc', '-n', '-i', pat, ru]),
         Command('grep', ['grep', '-E', '-ni', pat, ru], env=GREP_UNICODE),
     ])
 
@@ -653,6 +700,7 @@ def bench_subtitles_ru_surrounding_words(suite_dir):
 
     return Benchmark(pattern=pat, commands=[
         Command('rg', ['rg', '-n', pat, ru]),
+        Command('rg-mimalloc', ['rg-mimalloc', '-n', pat, ru]),
         Command('grep', ['grep', '-E', '-n', pat, ru], env=GREP_UNICODE),
         Command('ugrep', ['ugrep', '-n', pat, ru]),
         Command('ag (ASCII)', ['ag', '-s', pat, ru]),
@@ -676,8 +724,10 @@ def bench_subtitles_ru_no_literal(suite_dir):
 
     return Benchmark(pattern=pat, commands=[
         Command('rg', ['rg', '-n', pat, ru]),
+        Command('rg-mimalloc', ['rg-mimalloc', '-n', pat, ru]),
         Command('ugrep', ['ugrep', '-n', pat, ru]),
         Command('rg (ASCII)', ['rg', '-n', '(?-u)' + pat, ru]),
+        Command('rg-mimalloc (ASCII)', ['rg-mimalloc', '-n', '(?-u)' + pat, ru]),
         Command('ag (ASCII)', ['ag', '-s', pat, ru]),
         Command('grep (ASCII)', ['grep', '-E', '-n', pat, ru], env=GREP_ASCII),
         Command('ugrep (ASCII)', ['ugrep', '-n', '-U', pat, ru])
