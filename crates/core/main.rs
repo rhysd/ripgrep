@@ -45,10 +45,12 @@ static ALLOC: jemallocator::Jemalloc = jemallocator::Jemalloc;
 
 type Result<T> = ::std::result::Result<T, Box<dyn error::Error>>;
 
+const ERROR_STATUS: i32 = 2;
+
 fn main() {
     if let Err(err) = Args::parse().and_then(try_main) {
         eprintln!("{}", err);
-        process::exit(2);
+        process::exit(ERROR_STATUS);
     }
 }
 
